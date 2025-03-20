@@ -7,6 +7,7 @@ import { Providers } from "@/providers/providers";
 import { fontSans, fontMono } from "@/fonts";
 import Nav from "@/components/layout/nav";
 import Footer from "@/components/layout/footer";
+import { ChainInfo } from "@/components/chain/chain-info";
 
 import "./globals.css";
 
@@ -22,11 +23,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} ${fontMono.variable} antialiased`}>
+      <body
+        className={`${fontSans.variable} ${fontMono.variable} font-[family-name:var(--font-sans)] antialiased`}
+      >
         <Providers>
           <Nav />
           {children}
           <Footer />
+          <ChainInfo />
           <Toaster position="bottom-center" icons={{ loading: <Loader /> }} />
         </Providers>
       </body>

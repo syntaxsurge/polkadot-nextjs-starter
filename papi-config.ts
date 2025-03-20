@@ -15,9 +15,9 @@ export type AvailableApis = TypedApi<typeof dot>;
 
 export const chainConfig: ChainConfig[] = [
   {
-    key: "casinojam",
-    name: "CasinoJam",
+    key: "dot",
+    name: "Polkadot",
     descriptors: dot,
-    endpoints: ["ws://127.0.0.1:9944"],
+    endpoints: ["wss://rpc.polkadot.io"],
   },
 ];

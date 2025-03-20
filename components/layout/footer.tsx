@@ -6,8 +6,8 @@ const footerLinks = [
     title: "Resources",
     links: [
       { name: "Papi docs", href: "https://papi.how" },
-      { name: "Next.js docs", href: "https://nextjs.org/docs" },
       { name: "Polkadot docs", href: "https://docs.polkadot.com/" },
+      { name: "Next.js docs", href: "https://nextjs.org/docs" },
     ],
   },
 ];
@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-3">
             <Link href="/" className="text-2xl font-bold dark:text-white">
-              Polkadot Next.js Starter
+              Polkadot next.js Starter
             </Link>
             <p className="mt-4 text-sm text-gray-600 dark:text-gray-400 max-w-lg">
               A starter project for building Polkadot dApps with Next.js.
