@@ -46,7 +46,13 @@ export default function Footer() {
           ))}
         </div>
         <div className="mt-8 border-t border-gray-200 dark:border-gray-800 pt-8 text-center w-full flex flex-col items-center justify-center gap-4">
-          <PolkadotLogo />
+          <Link
+            href="https://polkadot.network"
+            target="_blank"
+            className="items-center inline-block"
+          >
+            <PolkadotLogo withPoweredBy={true} />
+          </Link>
         </div>
       </div>
     </footer>
