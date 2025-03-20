@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ArrowLeft, LogOut, Wallet } from "lucide-react";
+import { ArrowLeft, LogOut, Wallet, XIcon } from "lucide-react";
 import { usePolkadotExtension } from "@/providers/polkadot-extension-provider";
 import { cn, trimAddress } from "@/lib/utils";
 import { Identicon } from "@polkadot/react-identicon";
@@ -48,46 +48,59 @@ export function WalletSelect() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default" onClick={initiateConnection}>
+        <Button
+          variant="default"
+          onClick={initiateConnection}
+          className="transition-[min-width] duration-300 min-w-[100px]"
+        >
           <Wallet className="w-4 h-4" />
-          {selectedAccount?.name}
-          <Identicon
-            value={selectedAccount?.address}
-            size={24}
-            theme="polkadot"
-          />
+          <span className="max-w-[100px] truncate">
+            {selectedAccount?.name}
+          </span>
+          {selectedAccount?.address && (
+            <Identicon
+              value={selectedAccount?.address}
+              size={24}
+              theme="polkadot"
+            />
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] p-0">
-        <DialogHeader className="p-4">
-          <DialogTitle className="leading-snug">
-            {selectedExtensionName !== undefined && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mr-4"
-                onClick={() => setSelectedExtensionName(undefined)}
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
+        <DialogHeader className="p-4 flex flex-row items-center justify-start">
+          {selectedExtensionName !== undefined && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSelectedExtensionName(undefined)}
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+          )}
+          <DialogTitle
+            className={cn(
+              "leading-snug !pl-4 text-left",
+              selectedExtensionName !== undefined && "!pl-0"
             )}
+          >
             {selectedExtensionName !== undefined
               ? "Select Account"
               : "Select a wallet to connect to Polkadot"}
-            {selectedExtensionName !== undefined && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="ml-4"
-                onClick={disconnect}
-              >
-                <LogOut className="w-4 h-4" />
-              </Button>
-            )}
           </DialogTitle>
+          {selectedExtensionName !== undefined && (
+            <Button variant="ghost" size="icon" onClick={disconnect}>
+              <LogOut className="w-4 h-4" />
+            </Button>
+          )}
+          <DialogClose asChild className="ml-auto">
+            <Button variant="ghost" size="icon">
+              <XIcon />
+              <span className="sr-only">Close</span>
+            </Button>
+          </DialogClose>
         </DialogHeader>
 
-        <div className="p-4 pt-0 overflow-auto max-h-[500px]">
+        <div className="p-4 pt-0 overflow-auto max-h-[500px] min-h-[100px] transition-[max-height,opacity] duration-500">
           <div
             className={cn(
               "flex flex-col items-start gap-2 transition-[max-height,opacity]",
@@ -99,7 +112,7 @@ export function WalletSelect() {
             {systemWallets.map((wallet, index) => (
               <Button
                 variant="ghost"
-                className="w-full flex flex-row items-center justify-between"
+                className="w-full flex flex-row items-center justify-between h-auto [&_svg]:size-auto"
                 key={index}
                 onClick={() => {
                   if (installedExtensions.includes(wallet.id)) {
@@ -113,9 +126,9 @@ export function WalletSelect() {
                   <Image
                     src={wallet.logoUrls[0]}
                     alt={wallet.name}
-                    className="w-6 h-6"
-                    width={24}
-                    height={24}
+                    className="w-[32px] h-[32px]"
+                    width={32}
+                    height={32}
                   />
                   <span className="font-bold">{wallet.name}</span>
                 </div>

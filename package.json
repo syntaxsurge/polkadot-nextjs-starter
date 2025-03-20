@@ -1,5 +1,5 @@
 {
-  "name": "polka-auth",
+  "name": "polkadot-nextjs-starter",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,6 +19,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "detect-browser": "^5.3.0",
+    "framer-motion": "^12.5.0",
     "lucide-react": "^0.483.0",
     "next": "15.2.3",
     "next-themes": "^0.4.6",
