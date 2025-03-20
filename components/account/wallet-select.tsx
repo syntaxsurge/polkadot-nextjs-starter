@@ -140,11 +140,16 @@ export function WalletSelect() {
                 <DialogClose asChild key={index}>
                   <Button
                     variant="ghost"
-                    className="w-full flex flex-row h-auto justify-start items-center gap-0 [&_svg]:size-auto"
+                    className={cn(
+                      "w-full flex flex-row h-auto justify-start items-center gap-0 [&_svg]:size-auto",
+                      selectedAccount?.address === account.address
+                        ? "bg-accent"
+                        : ""
+                    )}
                     onClick={() => setSelectedAccount(account)}
                   >
                     <Identicon
-                      className="w-[32px] h-[32px] mr-2 [&>svg>circle:first-child]:fill-transparent"
+                      className="w-[32px] h-[32px] mr-3 [&>svg]:!h-full [&>svg]:!w-full"
                       value={account.address}
                       size={32}
                       theme="polkadot"

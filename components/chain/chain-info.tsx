@@ -9,6 +9,7 @@ import {
 import { useBlockNumber } from "@/hooks/use-block-number";
 import { useChain } from "@/providers/chain-provider";
 import { WsEvent } from "polkadot-api/ws-provider/web";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 export function ChainInfo() {
@@ -53,7 +54,11 @@ export function ChainInfo() {
               </>
             )}
             <span className="text-[10px]">
-              #{blockNumber ? blockNumber : "..."}
+              {blockNumber ? (
+                `#${blockNumber}`
+              ) : (
+                <Loader2 className="w-2.5 h-2.5 animate-spin" />
+              )}
             </span>
           </div>
         </TooltipTrigger>
