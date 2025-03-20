@@ -3,7 +3,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 export function PolkadotLogo({
   withPoweredBy = false,
