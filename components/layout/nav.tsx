@@ -8,6 +8,7 @@ export default function Nav() {
       <Link href="/" className="font-bold">
         Polkadot Starter
       </Link>
+
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <WalletSelect />

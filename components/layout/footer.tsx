@@ -45,8 +45,15 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-8 border-t border-gray-200 dark:border-gray-800 pt-8 text-center w-full">
+        <div className="mt-8 border-t border-gray-200 dark:border-gray-800 pt-8 text-center w-full flex flex-col items-center justify-center gap-4">
           <PolkadotLogo />
+          <a
+            className="hidden sm:block"
+            href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fniklasp%2Fpolkadot-nextjs-starter&project-name=polkadot-nextjs-starter&repository-name=polkadot-nextjs-starter&demo-title=Polkadot%20Next.js%20Starter%20&demo-description=A%20template%20to%20get%20started%20building%20apps%20powered%20by%20Polkadot&demo-url=https%3A%2F%2Fpolkadot-nextjs-starter.vercel.app&demo-image=https%3A%2F%2Fpolkadot-nextjs-starter.vercel.app%2Fpolkadot-nextjs-starter.png"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+          </a>
         </div>
       </div>
     </footer>
