@@ -5,6 +5,8 @@ Polkadot network using [papi](https://papi.how) for interacting with polkadot
 chains and Next.js. as a react framework. It includes essential tools and
 configurations to streamline development.
 
+![Polkadot Next.js Starter](public/polkadot-nextjs-starter.png)
+
 ## Features
 
 - **Next.js 15.x**: A React framework for server-side rendering and static site
@@ -38,13 +40,13 @@ configurations to streamline development.
 
    ```bash
    cd polkadot-nextjs-starter
-   npm install
+   pnpm install
    ```
 
 3. Run the development server:
 
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 ## Contributing
