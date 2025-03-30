@@ -38,23 +38,6 @@ export const polkadotjs: SubstrateWallet = {
   ],
 };
 
-export const subwallet: SubstrateWallet = {
-  id: "subwallet-js",
-  name: "SubWallet",
-  platforms: [SubstrateWalletPlatform.Browser],
-  urls: {
-    website: "https://subwallet.app/",
-    chromeExtension:
-      "https://chrome.google.com/webstore/detail/subwallet-polkadot-extens/onhogfjeacnfoofkfgppdlbmlmnplgbn",
-    firefoxExtension:
-      "https://addons.mozilla.org/en-US/firefox/addon/subwallet/",
-  },
-  logoUrls: [
-    "https://github.com/scio-labs/use-inkathon/raw/main/assets/wallet-logos/subwallet@128w.png",
-    "https://github.com/scio-labs/use-inkathon/raw/main/assets/wallet-logos/subwallet@512w.png",
-  ],
-};
-
 export const talisman: SubstrateWallet = {
   id: "talisman",
   name: "Talisman",
@@ -72,8 +55,25 @@ export const talisman: SubstrateWallet = {
   ],
 };
 
+export const subwallet: SubstrateWallet = {
+  id: "subwallet-js",
+  name: "SubWallet",
+  platforms: [SubstrateWalletPlatform.Android, SubstrateWalletPlatform.iOS],
+  urls: {
+    website: "https://subwallet.app/",
+    chromeExtension:
+      "https://chrome.google.com/webstore/detail/subwallet-polkadot-extens/onhogfjeacnfoofkfgppdlbmlmnplgbn",
+    firefoxExtension:
+      "https://addons.mozilla.org/en-US/firefox/addon/subwallet/",
+  },
+  logoUrls: [
+    "https://github.com/scio-labs/use-inkathon/raw/main/assets/wallet-logos/subwallet@128w.png",
+    "https://github.com/scio-labs/use-inkathon/raw/main/assets/wallet-logos/subwallet@512w.png",
+  ],
+};
+
 export const nova: SubstrateWallet = {
-  id: "polkadot-js/injected",
+  id: "polkadot-js",
   name: "Nova Wallet",
   platforms: [SubstrateWalletPlatform.Android, SubstrateWalletPlatform.iOS],
   urls: {
