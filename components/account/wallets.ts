@@ -73,7 +73,7 @@ export const talisman: SubstrateWallet = {
 };
 
 export const nova: SubstrateWallet = {
-  id: "nova",
+  id: "polkadot-js/injected",
   name: "Nova Wallet",
   platforms: [SubstrateWalletPlatform.Android, SubstrateWalletPlatform.iOS],
   urls: {
