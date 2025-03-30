@@ -5,7 +5,6 @@ import { Loader } from "lucide-react";
 import { Providers } from "@/providers/providers";
 
 import { fontSans, fontMono } from "@/fonts";
-import Nav from "@/components/layout/nav";
 import Footer from "@/components/layout/footer";
 import { ChainInfo } from "@/components/chain/chain-info";
 
