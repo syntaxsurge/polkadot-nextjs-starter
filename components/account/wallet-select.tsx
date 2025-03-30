@@ -16,7 +16,7 @@ import { Identicon } from "@polkadot/react-identicon";
 import { allSubstrateWallets, SubstrateWalletPlatform } from "./wallets";
 import { isMobile } from "@/lib/is-mobile";
 import Image from "next/image";
-import { detect } from "detect-browser";
+
 export function WalletSelect() {
   const {
     accounts,
@@ -30,8 +30,6 @@ export function WalletSelect() {
     isAccountsLoading,
   } = usePolkadotExtension();
 
-  const browser = detect();
-
   const systemWallets = allSubstrateWallets
     .filter((wallet) =>
       isMobile()
@@ -43,8 +41,8 @@ export function WalletSelect() {
       installedExtensions.includes(a.id)
         ? -1
         : installedExtensions.includes(b.id)
-        ? 1
-        : 0
+          ? 1
+          : 0
     );
 
   return (
@@ -53,10 +51,10 @@ export function WalletSelect() {
         <Button
           variant="default"
           onClick={initiateConnection}
-          className="transition-[min-width] duration-300 min-w-[100px]"
+          className="transition-[min-width] duration-300"
         >
           <Wallet className="w-4 h-4" />
-          <span className="max-w-[100px] truncate">
+          <span className="hidden sm:block max-w-[100px] truncate">
             {selectedAccount?.name}
           </span>
           {selectedAccount?.address && (
@@ -103,8 +101,6 @@ export function WalletSelect() {
         </DialogHeader>
 
         <div className="p-4 pt-0 overflow-auto max-h-[500px] min-h-[100px] transition-[max-height,opacity] duration-500">
-          installedExtensions: {installedExtensions.join(", ")}
-          browser: {JSON.stringify(browser)}
           <div
             className={cn(
               "flex flex-col items-start gap-2 transition-[max-height,opacity]",
@@ -114,40 +110,34 @@ export function WalletSelect() {
             )}
           >
             {systemWallets.map((wallet, index) => (
-              <>
-                <span>
-                  {wallet.id}, {wallet.name}, {wallet.platforms},{" "}
-                  {wallet.urls.website}
+              <Button
+                variant="ghost"
+                className="w-full flex flex-row items-center justify-between h-auto [&_svg]:size-auto"
+                key={index}
+                onClick={() => {
+                  if (installedExtensions.includes(wallet.id)) {
+                    setSelectedExtensionName(wallet.id);
+                  } else {
+                    window.open(wallet.urls.website, "_blank");
+                  }
+                }}
+              >
+                <div className="flex flex-row items-center justify-start gap-4">
+                  <Image
+                    src={wallet.logoUrls[0]}
+                    alt={wallet.name}
+                    className="w-[32px] h-[32px]"
+                    width={32}
+                    height={32}
+                  />
+                  <span className="font-bold">{wallet.name}</span>
+                </div>
+                <span className="text-[10px] text-muted-foreground">
+                  {installedExtensions.includes(wallet.id)
+                    ? "Detected"
+                    : "Install"}
                 </span>
-                <Button
-                  variant="ghost"
-                  className="w-full flex flex-row items-center justify-between h-auto [&_svg]:size-auto"
-                  key={index}
-                  onClick={() => {
-                    if (installedExtensions.includes(wallet.id)) {
-                      setSelectedExtensionName(wallet.id);
-                    } else {
-                      window.open(wallet.urls.website, "_blank");
-                    }
-                  }}
-                >
-                  <div className="flex flex-row items-center justify-start gap-4">
-                    <Image
-                      src={wallet.logoUrls[0]}
-                      alt={wallet.name}
-                      className="w-[32px] h-[32px]"
-                      width={32}
-                      height={32}
-                    />
-                    <span className="font-bold">{wallet.name}</span>
-                  </div>
-                  <span className="text-[10px] text-muted-foreground">
-                    {installedExtensions.includes(wallet.id)
-                      ? "Detected"
-                      : "Install"}
-                  </span>
-                </Button>
-              </>
+              </Button>
             ))}
           </div>
           <div

@@ -98,7 +98,7 @@ export function useChain() {
  * Default endpoint will be used if none is specified
  */
 export function handleWsEndpoint({
-  defaultEndpoint = "wss://rpc.casinojam.io",
+  defaultEndpoint = "wss://rpc-polkadot.luckyfriday.io",
 }: {
   defaultEndpoint?: string;
 } = {}) {
@@ -106,8 +106,6 @@ export function handleWsEndpoint({
 
   const params = new URLSearchParams(window.location.search);
   const wsEndpoint = params.get("rpc");
-
-  console.log("wsEndpoint", wsEndpoint);
 
   if (!wsEndpoint) return defaultEndpoint;
 

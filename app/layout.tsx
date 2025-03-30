@@ -10,6 +10,7 @@ import Footer from "@/components/layout/footer";
 import { ChainInfo } from "@/components/chain/chain-info";
 
 import "./globals.css";
+import { NavBar } from "@/components/layout/nav-bar";
 
 export const metadata: Metadata = {
   title: "Polkadot Next.js Starter",
@@ -27,7 +28,7 @@ export default function RootLayout({
         className={`${fontSans.variable} ${fontMono.variable} font-[family-name:var(--font-sans)] antialiased`}
       >
         <Providers>
-          <Nav />
+          <NavBar />
           {children}
           <Footer />
           <ChainInfo />
