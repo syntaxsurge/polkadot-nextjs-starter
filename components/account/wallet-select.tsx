@@ -110,34 +110,40 @@ export function WalletSelect() {
             )}
           >
             {systemWallets.map((wallet, index) => (
-              <Button
-                variant="ghost"
-                className="w-full flex flex-row items-center justify-between h-auto [&_svg]:size-auto"
-                key={index}
-                onClick={() => {
-                  if (installedExtensions.includes(wallet.id)) {
-                    setSelectedExtensionName(wallet.id);
-                  } else {
-                    window.open(wallet.urls.website, "_blank");
-                  }
-                }}
-              >
-                <div className="flex flex-row items-center justify-start gap-4">
-                  <Image
-                    src={wallet.logoUrls[0]}
-                    alt={wallet.name}
-                    className="w-[32px] h-[32px]"
-                    width={32}
-                    height={32}
-                  />
-                  <span className="font-bold">{wallet.name}</span>
-                </div>
-                <span className="text-[10px] text-muted-foreground">
-                  {installedExtensions.includes(wallet.id)
-                    ? "Detected"
-                    : "Install"}
+              <>
+                <span>
+                  {wallet.id}, {wallet.name}, {wallet.platforms},{" "}
+                  {wallet.urls.website}
                 </span>
-              </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full flex flex-row items-center justify-between h-auto [&_svg]:size-auto"
+                  key={index}
+                  onClick={() => {
+                    if (installedExtensions.includes(wallet.id)) {
+                      setSelectedExtensionName(wallet.id);
+                    } else {
+                      window.open(wallet.urls.website, "_blank");
+                    }
+                  }}
+                >
+                  <div className="flex flex-row items-center justify-start gap-4">
+                    <Image
+                      src={wallet.logoUrls[0]}
+                      alt={wallet.name}
+                      className="w-[32px] h-[32px]"
+                      width={32}
+                      height={32}
+                    />
+                    <span className="font-bold">{wallet.name}</span>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground">
+                    {installedExtensions.includes(wallet.id)
+                      ? "Detected"
+                      : "Install"}
+                  </span>
+                </Button>
+              </>
             ))}
           </div>
           <div
