@@ -94,7 +94,7 @@ export const nova: SubstrateWallet = {
  */
 export const allSubstrateWallets: SubstrateWallet[] = [
   talisman,
-  subwallet,
   nova,
+  subwallet,
   polkadotjs,
 ];

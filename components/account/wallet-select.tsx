@@ -16,7 +16,7 @@ import { Identicon } from "@polkadot/react-identicon";
 import { allSubstrateWallets, SubstrateWalletPlatform } from "./wallets";
 import { isMobile } from "@/lib/is-mobile";
 import Image from "next/image";
-
+import { detect } from "detect-browser";
 export function WalletSelect() {
   const {
     accounts,
@@ -29,6 +29,8 @@ export function WalletSelect() {
     disconnect,
     isAccountsLoading,
   } = usePolkadotExtension();
+
+  const browser = detect();
 
   const systemWallets = allSubstrateWallets
     .filter((wallet) =>
@@ -102,6 +104,7 @@ export function WalletSelect() {
 
         <div className="p-4 pt-0 overflow-auto max-h-[500px] min-h-[100px] transition-[max-height,opacity] duration-500">
           installedExtensions: {installedExtensions.join(", ")}
+          browser: {JSON.stringify(browser)}
           <div
             className={cn(
               "flex flex-col items-start gap-2 transition-[max-height,opacity]",
