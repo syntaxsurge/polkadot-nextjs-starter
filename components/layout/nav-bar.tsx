@@ -2,12 +2,17 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 
 import { NavMobileControl } from "./nav-mobile-control";
-import { Button } from "@/components/ui/button";
 import { PolkadotLogo } from "../ui/polkadot-logo";
 import { ThemeToggle } from "./theme-toggle";
 import { WalletSelect } from "../account/wallet-select";
 
-const navItems = [
+export interface NavItem {
+  title: string;
+  href?: string;
+  items?: NavItem[];
+}
+
+const navItems: NavItem[] = [
   {
     title: "Products",
     href: "/products",
@@ -48,7 +53,11 @@ export function NavBar() {
           </Link>
 
           {/* Mobile menu control - includes both toggle button and menu */}
-          <NavMobileControl items={navItems} />
+          <div className="md:hidden flex items-center gap-2">
+            <WalletSelect />
+            <ThemeToggle />
+            <NavMobileControl items={navItems} />
+          </div>
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex md:flex-1 md:justify-center">
@@ -76,7 +85,7 @@ export function NavBar() {
                         {item.items.map((subItem) => (
                           <Link
                             key={subItem.title}
-                            href={subItem.href}
+                            href={subItem.href || "#"}
                             className="rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
                           >
                             {subItem.title}

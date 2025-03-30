@@ -4,11 +4,9 @@ import * as React from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavMobile } from "./nav-mobile";
-interface NavItem {
-  title: string;
-  items: { title: string; href: string }[];
-}
-
+import type { NavItem } from "./nav-bar";
+import { PolkadotLogo } from "../ui/polkadot-logo";
+import Link from "next/link";
 interface NavMobileControlProps {
   items: NavItem[];
 }
@@ -18,12 +16,7 @@ export function NavMobileControl({ items }: NavMobileControlProps) {
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="md:hidden"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
         <span className="sr-only">Toggle menu</span>
       </Button>
@@ -33,8 +26,13 @@ export function NavMobileControl({ items }: NavMobileControlProps) {
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex h-16 items-center justify-between border-b pl-6 pr-2">
-          <span className="font-semibold">Menu</span>
+        <div className="flex h-16 items-center justify-between border-b pl-4 pr-2">
+          <Link href="/" className="flex items-end flex-col">
+            <PolkadotLogo withPoweredBy={false} />
+            <span className="text-[13px] font-light mr-1 -mt-1.5">
+              App Starter
+            </span>
+          </Link>
           <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
             <X className="size-5" />
             <span className="sr-only">Close menu</span>

@@ -17,7 +17,7 @@ import { allSubstrateWallets, SubstrateWalletPlatform } from "./wallets";
 import { isMobile } from "@/lib/is-mobile";
 import Image from "next/image";
 
-export function WalletSelect() {
+export function WalletSelect({ className }: { className?: string }) {
   const {
     accounts,
     installedExtensions,
@@ -47,16 +47,18 @@ export function WalletSelect() {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className={className}>
         <Button
           variant="default"
           onClick={initiateConnection}
           className="transition-[min-width] duration-300"
         >
           <Wallet className="w-4 h-4" />
-          <span className="hidden sm:block max-w-[100px] truncate">
-            {selectedAccount?.name}
-          </span>
+          {selectedAccount?.name && (
+            <span className="hidden sm:block max-w-[100px] truncate">
+              {selectedAccount?.name}
+            </span>
+          )}
           {selectedAccount?.address && (
             <Identicon
               value={selectedAccount?.address}
