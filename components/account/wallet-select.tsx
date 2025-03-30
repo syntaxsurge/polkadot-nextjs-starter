@@ -101,6 +101,7 @@ export function WalletSelect() {
         </DialogHeader>
 
         <div className="p-4 pt-0 overflow-auto max-h-[500px] min-h-[100px] transition-[max-height,opacity] duration-500">
+          installedExtensions: {installedExtensions.join(", ")}
           <div
             className={cn(
               "flex flex-col items-start gap-2 transition-[max-height,opacity]",
