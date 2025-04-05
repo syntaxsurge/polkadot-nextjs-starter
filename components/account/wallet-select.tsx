@@ -17,7 +17,13 @@ import { allSubstrateWallets, SubstrateWalletPlatform } from "./wallets";
 import { isMobile } from "@/lib/is-mobile";
 import Image from "next/image";
 
-export function WalletSelect({ className }: { className?: string }) {
+export function WalletSelect({
+  className,
+  placeholder,
+}: {
+  className?: string;
+  placeholder?: string;
+}) {
   const {
     accounts,
     installedExtensions,
@@ -49,11 +55,11 @@ export function WalletSelect({ className }: { className?: string }) {
     <Dialog>
       <DialogTrigger asChild className={className}>
         <Button
-          variant="default"
+          variant="outline"
           onClick={initiateConnection}
           className="transition-[min-width] duration-300"
         >
-          <Wallet className="w-4 h-4" />
+          <Wallet className="w-4 h-4" /> {placeholder}
           {selectedAccount?.name && (
             <span className="hidden sm:block max-w-[100px] truncate">
               {selectedAccount?.name}
@@ -62,8 +68,9 @@ export function WalletSelect({ className }: { className?: string }) {
           {selectedAccount?.address && (
             <Identicon
               value={selectedAccount?.address}
-              size={24}
+              size={30}
               theme="polkadot"
+              className="[&>svg>circle:first-child]:fill-none"
             />
           )}
         </Button>
@@ -164,7 +171,7 @@ export function WalletSelect({ className }: { className?: string }) {
                     onClick={() => setSelectedAccount(account)}
                   >
                     <Identicon
-                      className="w-[32px] h-[32px] mr-3 [&>svg]:!h-full [&>svg]:!w-full"
+                      className="w-[32px] h-[32px] mr-3 [&>svg]:!h-full [&>svg]:!w-full [&>svg>circle:first-child]:fill-none"
                       value={account.address}
                       size={32}
                       theme="polkadot"

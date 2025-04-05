@@ -5,6 +5,7 @@ import { NavMobileControl } from "./nav-mobile-control";
 import { PolkadotLogo } from "../ui/polkadot-logo";
 import { ThemeToggle } from "./theme-toggle";
 import { WalletSelect } from "../account/wallet-select";
+import { ChainSelect } from "../chain/chain-select";
 
 export interface NavItem {
   title: string;
@@ -42,8 +43,8 @@ export function NavBar() {
   return (
     <header className="sticky top-0 z-50 w-full px-2 sm:px-0">
       <div className="absolute inset-0 h-16 bg-gradient-to-b from-background via-background/50 to-background/0 backdrop-blur-sm -z-10" />
-      <div className="container mx-auto flex h-16 items-center">
-        <div className="flex w-full items-center justify-between md:justify-start">
+      <div className="px-8 flex h-16 items-center justify-between">
+        <div className="flex w-full items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-end flex-col">
             <PolkadotLogo withPoweredBy={false} />
@@ -54,13 +55,14 @@ export function NavBar() {
 
           {/* Mobile menu control - includes both toggle button and menu */}
           <div className="md:hidden flex items-center gap-2">
-            <WalletSelect />
             <ThemeToggle />
+            <ChainSelect />
+            <WalletSelect />
             <NavMobileControl items={navItems} />
           </div>
 
           {/* Desktop navigation */}
-          <nav className="hidden md:flex md:flex-1 md:justify-center">
+          <nav className="hidden md:flex md:flex-1 absolute left-1/2 -translate-x-1/2">
             <ul className="flex gap-6">
               {navItems.map((item) => (
                 <li key={item.title} className="group relative">
@@ -100,8 +102,9 @@ export function NavBar() {
           </nav>
 
           {/* Right Side */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex gap-1 items-center">
             <ThemeToggle />
+            <ChainSelect />
             <WalletSelect />
           </div>
         </div>

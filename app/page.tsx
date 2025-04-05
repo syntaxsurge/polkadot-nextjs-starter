@@ -1,6 +1,6 @@
 import { fontUnbounded } from "@/fonts";
 import { cn } from "@/lib/utils";
-
+import { AccountBalance } from "@/components/account/account-balance";
 export default async function Home() {
   return (
     <main className="flex min-h-screen p-8 pb-20 flex-col gap-[32px] row-start-2 items-center justify-center relative">
@@ -18,8 +18,14 @@ export default async function Home() {
         href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fniklasp%2Fpolkadot-nextjs-starter"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+        <img
+          src="https://vercel.com/button"
+          alt="Deploy with Vercel"
+          width={103}
+          height={32}
+        />
       </a>
+      <AccountBalance />
     </main>
   );
 }

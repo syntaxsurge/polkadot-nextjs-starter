@@ -28,9 +28,7 @@ const ChainContext = createContext<ChainProviderType | undefined>(undefined);
 
 export function ChainProvider({ children }: { children: React.ReactNode }) {
   const wsProviderRef = useRef<WsJsonRpcProvider | null>(null);
-  const [activeChain, setActiveChain] = useState<ChainConfig | null>(
-    chainConfig[0]
-  );
+  const [activeChain, _setActiveChain] = useState<ChainConfig | null>(null);
   const [activeApi, setActiveApi] = useState<AvailableApis | null>(null);
   const clientRef = useRef<PolkadotClient | null>(null);
 
@@ -39,35 +37,31 @@ export function ChainProvider({ children }: { children: React.ReactNode }) {
   >(undefined);
 
   useEffect(() => {
-    if (!activeChain) {
-      console.error(
-        "Error: No active chain. Please set one in your `/papi-config.ts` file."
-      );
-      return;
-    }
+    setActiveChain(chainConfig[0]);
+  }, []);
 
-    console.log("Switching chain to", activeChain.name);
-
+  const setActiveChain = (newChain: ChainConfig) => {
     try {
       // Check for custom endpoint in URL, fallback to chain's default endpoints
       const wsEndpoint = handleWsEndpoint({
-        defaultEndpoint: activeChain.endpoints[0],
+        defaultEndpoint: newChain.endpoints[0],
       });
-      const endpoints = [wsEndpoint, ...activeChain.endpoints.slice(1)];
+      const endpoints = [wsEndpoint, ...newChain.endpoints.slice(1)];
 
       const _wsProvider = getWsProvider(endpoints, setConnectionStatus);
 
       wsProviderRef.current = _wsProvider;
 
       const client = createClient(withPolkadotSdkCompat(_wsProvider));
-      const api = client.getTypedApi(activeChain.descriptors);
+      const api = client.getTypedApi(newChain.descriptors);
 
       clientRef.current = client;
       setActiveApi(api);
+      _setActiveChain(newChain);
     } catch (error) {
       console.error("Error connecting to chain", error);
     }
-  }, [activeChain]);
+  };
 
   return (
     <ChainContext.Provider

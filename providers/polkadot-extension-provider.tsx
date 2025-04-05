@@ -139,8 +139,6 @@ export const PolkadotExtensionProvider = ({
       if (_selectedAccount) {
         handleSetSelectedAccount(_selectedAccount);
       }
-    } else {
-      handleSetSelectedAccount(accounts[0]);
     }
   }
 
