@@ -1,7 +1,6 @@
 import { fontUnbounded } from "@/fonts";
 import { cn } from "@/lib/utils";
 import { AccountBalance } from "@/components/account/account-balance";
-import SomeComponent from "@/components/account/test-component";
 
 export default async function Home() {
   return (
