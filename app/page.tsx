@@ -1,6 +1,8 @@
 import { fontUnbounded } from "@/fonts";
 import { cn } from "@/lib/utils";
 import { AccountBalance } from "@/components/account/account-balance";
+import SomeComponent from "@/components/account/test-component";
+
 export default async function Home() {
   return (
     <main className="flex min-h-screen p-8 pb-20 flex-col gap-[32px] row-start-2 items-center justify-center relative">

@@ -20,6 +20,7 @@ interface PolkadotExtensionContextType {
   setSelectedAccount: (account: InjectedPolkadotAccount) => void;
   disconnect: () => void;
   isAccountsLoading: boolean;
+  isInitializing: boolean;
 }
 
 export const PolkadotExtensionContext = createContext<
@@ -31,6 +32,7 @@ export const PolkadotExtensionProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const [isInitializing, setIsInitializing] = useState(true);
   const [isAccountsLoading, setIsAccountsLoading] = useState<boolean>(false);
   const [userWantsToConnect, setUserWantsToConnect] = useState<boolean>(false);
   const [installedExtensions, setInstalledExtensions] = useState<string[]>([]);
@@ -59,6 +61,7 @@ export const PolkadotExtensionProvider = ({
       setSelectedExtensionName(storedExtensionName);
       setSelectedAccount(storedAccount);
       setUserWantsToConnect(!!storedUserWantsToConnect);
+      setIsInitializing(false);
     };
 
     const timeout = setTimeout(() => {
@@ -139,6 +142,8 @@ export const PolkadotExtensionProvider = ({
       if (_selectedAccount) {
         handleSetSelectedAccount(_selectedAccount);
       }
+    } else {
+      handleSetSelectedAccount(accounts[0]);
     }
   }
 
@@ -152,6 +157,7 @@ export const PolkadotExtensionProvider = ({
       value={{
         installedExtensions,
         isAccountsLoading,
+        isInitializing,
         selectedExtensionName,
         setSelectedExtensionName: handleSetSelectedExtensionName,
         accounts,

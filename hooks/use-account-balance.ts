@@ -31,6 +31,7 @@ export function useAccountBalance() {
         lastUpdated: new Date(),
       });
     });
+
     return () => {
       setAccountBalance(null);
       subscription?.unsubscribe();
