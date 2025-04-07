@@ -4,8 +4,8 @@ import { ChevronDown } from "lucide-react";
 import { NavMobileControl } from "./nav-mobile-control";
 import { PolkadotLogo } from "../ui/polkadot-logo";
 import { ThemeToggle } from "./theme-toggle";
-import { WalletSelect } from "../account/wallet-select";
 import { ChainSelect } from "../chain/chain-select";
+import { WalletSelect } from "../account/wallet-select";
 
 export interface NavItem {
   title: string;
