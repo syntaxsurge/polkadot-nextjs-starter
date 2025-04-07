@@ -37,24 +37,18 @@ export function AccountBalance() {
     if (accountBalance?.free === undefined) return null;
 
     return formatBalance({
-      value: accountBalance.free,
+      value: accountBalance.free - accountBalance.frozen,
       decimals: tokenDecimals,
       options: {
         nDecimals: 4,
       },
     });
-  }, [accountBalance?.free, tokenDecimals]);
+  }, [accountBalance?.free, accountBalance?.frozen, tokenDecimals]);
 
   // Format the last updated time
   const lastUpdatedText = useMemo(
     () => formatLastUpdated(accountBalance?.lastUpdated),
     [accountBalance?.lastUpdated],
-  );
-
-  // Create a memoized title to avoid duplication
-  const cardTitle = useMemo(
-    () => `Free Balance on ${activeChain?.name || "Chain"}`,
-    [activeChain?.name],
   );
 
   // Determine the current state
