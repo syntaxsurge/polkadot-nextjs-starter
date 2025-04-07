@@ -10,24 +10,26 @@ configurations to streamline development.
 
 ## Features
 
-- **Next.js 15.x**: A React framework for server-side rendering and static site
+- **[Next.js 15.x](https://nextjs.org/docs/app/getting-started)**: A React framework for server-side rendering and static site
   generation.
-- **Polkadot API**: Integration with Polkadot's JavaScript API for blockchain
+- **[Polkadot API](https://papi.how)**: Integration with Polkadot's JavaScript API for blockchain
   interactions.
-- **Tailwind CSS 4.0**: Utility-first CSS framework for responsive design.
+- **[Tailwind CSS 4.0](https://tailwindcss.com/)**: Utility-first CSS framework for responsive design.
 - **[shadcn ui](https://ui.shadcn.com/)**: Accessible UI components for building
   modern interfaces.
 - **[React Query](https://tanstack.com/query/latest/docs/framework/react/overview)**:
   Data-fetching library for managing server state.
-- **Next Themes**: Theme management for light and dark modes.
+- **[Next Themes](https://ui.shadcn.com/docs/dark-mode/next)**: Theme management for light and dark modes.
 
 ## Project Structure
 
-- **components/**: Contains UI components like `PolkadotLogo`, `Footer`, and
+- `app/`: Main application files including layout and page components.
+- `components/`: Contains UI components like `PolkadotLogo`, `Footer`, and
   `Nav`.
-- **providers/**: Context providers for themes, Polkadot extensions, and
+- `providers/`: Context providers for themes, Polkadot extensions, and
   blockchain connections.
-- **app/**: Main application files including layout and page components.
+- `hooks/`: Example hooks with subscriptions.
+- `lib/`: utility functions
 
 ## Installation
 
