@@ -15,7 +15,7 @@ const footerLinks = [
 export default function Footer() {
   return (
     <footer className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-black">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-6 sm:px-8 py-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-3">
             <Link href="/" className="text-2xl font-bold dark:text-white">
@@ -26,7 +26,7 @@ export default function Footer() {
             </p>
           </div>
           {footerLinks.map((category) => (
-            <div key={category.title} className="text-right">
+            <div key={category.title} className="text-left sm:text-right">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
                 {category.title}
               </h3>

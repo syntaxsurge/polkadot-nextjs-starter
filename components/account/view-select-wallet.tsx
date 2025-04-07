@@ -6,7 +6,7 @@ import { isMobile } from "@/lib/is-mobile";
 import { allSubstrateWallets } from "./wallets";
 import Image from "next/image";
 import { DialogFooter } from "../ui/dialog";
-import { Zap, ZapOff } from "lucide-react";
+import { ArrowRight, Zap, ZapOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const ViewSelectWallet = ({ next }: ViewNavigationProps) => {
@@ -105,8 +105,9 @@ export const ViewSelectWallet = ({ next }: ViewNavigationProps) => {
           onClick={next}
           size="lg"
           disabled={!selectedExtensions.length}
+          className="flex flex-row items-center gap-2"
         >
-          Go to accounts →
+          Go to accounts <ArrowRight className="w-3 h-3" />
         </Button>
       </DialogFooter>
     </div>

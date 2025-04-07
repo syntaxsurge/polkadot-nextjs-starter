@@ -41,14 +41,14 @@ const navItems: NavItem[] = [
 
 export function NavBar() {
   return (
-    <header className="sticky top-0 z-50 w-full px-2 sm:px-0">
+    <header className="sticky top-0 z-50 w-full">
       <div className="absolute inset-0 h-16 bg-gradient-to-b from-background via-background/50 to-background/0 backdrop-blur-sm -z-10" />
-      <div className="px-8 flex h-16 items-center justify-between">
+      <div className="px-6 sm:px-8 flex h-16 items-center justify-between">
         <div className="flex w-full items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-end flex-col">
             <PolkadotLogo withPoweredBy={false} />
-            <span className="text-[13px] font-light mr-1 -mt-1.5">
+            <span className="text-[10px] sm:text-[13px] font-light mr-1 -mt-1.5">
               App Starter
             </span>
           </Link>

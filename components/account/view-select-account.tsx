@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { trimAddress } from "@/lib/utils";
 import Identicon from "@polkadot/react-identicon";
+import { ArrowLeft } from "lucide-react";
 
 export function ViewSelectAccount({ previous }: ViewNavigationProps) {
   const {
@@ -37,7 +38,7 @@ export function ViewSelectAccount({ previous }: ViewNavigationProps) {
 
   return (
     <>
-      <div className="flex flex-col gap-2 overflow-y-scroll scrollbar-thin max-h-[60vh] min-h-[100px]">
+      <div className="flex flex-col gap-2 overflow-y-scroll scroll-shadows max-h-[60vh] min-h-[100px]">
         {selectedExtensions.map((extension) => {
           const logoUrl = systemWallets.find(
             (wallet) => wallet.id === extension.name,
@@ -99,9 +100,9 @@ export function ViewSelectAccount({ previous }: ViewNavigationProps) {
         <Button
           variant="outline"
           onClick={previous}
-          className="flex items-center gap-2"
+          className="flex flex-row items-center gap-2"
         >
-          ← Back to wallet selection
+          <ArrowLeft className="w-3 h-3" /> Back to wallet selection
         </Button>
       </DialogFooter>
     </>
