@@ -1,10 +1,17 @@
 import Link from "next/link";
 import { PolkadotLogo } from "../ui/polkadot-logo";
+import Github from "@/icons/github.svg";
+import Image from "next/image";
 
 const footerLinks = [
   {
     title: "Resources",
     links: [
+      {
+        name: "Github Repository",
+        href: "https://github.com/niklasp/polkadot-nextjs-starter",
+        icon: <Image src={Github} alt="Github" width={16} height={16} />,
+      },
       { name: "Papi docs", href: "https://papi.how" },
       { name: "Polkadot docs", href: "https://docs.polkadot.com/" },
       { name: "Next.js docs", href: "https://nextjs.org/docs" },
@@ -35,8 +42,9 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
+                      className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 flex sm:justify-end gap-2"
                     >
+                      {link.icon}
                       {link.name}
                     </Link>
                   </li>
