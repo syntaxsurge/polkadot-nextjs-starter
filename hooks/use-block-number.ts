@@ -4,7 +4,7 @@ import { useLightClientApi } from "@/providers/lightclient-api-provider";
 import { useEffect, useState } from "react";
 
 export function useBlockNumber() {
-  const { client } = useLightClientApi();
+  const { client, connectionStatus } = useLightClientApi();
   const [blockNumber, setBlockNumber] = useState<number | null>(null);
 
   useEffect(() => {

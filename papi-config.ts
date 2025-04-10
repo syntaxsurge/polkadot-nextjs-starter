@@ -13,6 +13,24 @@ import { chainSpec as polkadotAssetHubChainSpec } from "polkadot-api/chains/polk
 import { chainSpec as paseoChainSpec } from "polkadot-api/chains/paseo";
 import { chainSpec as paseoAssetHubChainSpec } from "polkadot-api/chains/paseo_asset_hub";
 
+export interface ChainSpec {
+  name: string;
+  id: string;
+  chainType: string;
+  bootNodes: string[];
+  telemetryEndpoints: string[];
+  protocolId: string;
+  properties: {
+    tokenDecimals: number;
+    tokenSymbol: string;
+  };
+  relay_chain: string;
+  para_id: number;
+  codeSubstitutes: Record<string, string>;
+  genesis: {
+    stateRootHash: string;
+  };
+}
 export interface ChainConfig {
   key: string;
   name: string;
@@ -24,12 +42,8 @@ export interface ChainConfig {
   endpoints: string[];
   explorerUrl?: string;
   icon?: React.ReactNode;
-  chainSpec: string;
-  properties: {
-    tokenDecimals: number;
-    tokenSymbol: string;
-  };
-  relayChainSpec?: string;
+  chainSpec: ChainSpec;
+  relayChainSpec?: ChainSpec;
 }
 
 export type AvailableApis =
@@ -38,6 +52,7 @@ export type AvailableApis =
   | TypedApi<typeof paseo>
   | TypedApi<typeof paseo_asset_hub>;
 
+// TODO: add all chains your dapp supports here
 export const chainConfig: ChainConfig[] = [
   {
     key: "polkadot",
@@ -45,11 +60,7 @@ export const chainConfig: ChainConfig[] = [
     descriptors: polkadot,
     endpoints: ["wss://rpc.polkadot.io"],
     icon: logos.polkadot,
-    properties: {
-      tokenDecimals: 10,
-      tokenSymbol: "DOT",
-    },
-    chainSpec: polkadotChainSpec,
+    chainSpec: JSON.parse(polkadotChainSpec),
   },
   {
     key: "polkadot_asset_hub",
@@ -60,12 +71,8 @@ export const chainConfig: ChainConfig[] = [
       "wss://statemint.api.onfinality.io/public-ws",
     ],
     icon: logos.assetHub,
-    properties: {
-      tokenDecimals: 10,
-      tokenSymbol: "DOT",
-    },
-    relayChainSpec: polkadotChainSpec,
-    chainSpec: polkadotAssetHubChainSpec,
+    chainSpec: JSON.parse(polkadotAssetHubChainSpec),
+    relayChainSpec: JSON.parse(polkadotChainSpec),
   },
   {
     key: "paseo",
@@ -73,11 +80,7 @@ export const chainConfig: ChainConfig[] = [
     descriptors: paseo,
     endpoints: ["wss://rpc.ibp.network/paseo"],
     icon: logos.paseo,
-    properties: {
-      tokenDecimals: 10,
-      tokenSymbol: "PAS",
-    },
-    chainSpec: paseoChainSpec,
+    chainSpec: JSON.parse(paseoChainSpec),
   },
   {
     key: "paseo_asset_hub",
@@ -85,11 +88,7 @@ export const chainConfig: ChainConfig[] = [
     descriptors: paseo_asset_hub,
     endpoints: ["wss://asset-hub-paseo-rpc.dwellir.com"],
     icon: logos.paseoAssethub,
-    properties: {
-      tokenDecimals: 10,
-      tokenSymbol: "PAS",
-    },
-    relayChainSpec: paseoChainSpec,
-    chainSpec: paseoAssetHubChainSpec,
+    chainSpec: JSON.parse(paseoAssetHubChainSpec),
+    relayChainSpec: JSON.parse(paseoChainSpec),
   },
 ];

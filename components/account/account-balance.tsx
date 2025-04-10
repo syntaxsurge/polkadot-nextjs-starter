@@ -23,14 +23,7 @@ export function AccountBalance() {
   const { selectedAccount, isInitializing } = usePolkadotExtension();
 
   // Memoize chain properties to prevent unnecessary recalculations
-  const { tokenDecimals, tokenSymbol } = useMemo(
-    () =>
-      activeChain?.properties || {
-        tokenDecimals: 10,
-        tokenSymbol: "PAS",
-      },
-    [activeChain?.properties],
-  );
+  const { tokenDecimals, tokenSymbol } = activeChain.chainSpec.properties;
 
   // Format the balance for display
   const formattedBalance = useMemo(() => {

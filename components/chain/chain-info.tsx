@@ -9,13 +9,66 @@ import {
 import { useBlockNumber } from "@/hooks/use-block-number";
 import { WsEvent } from "polkadot-api/ws-provider/web";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLightClientApi } from "@/providers/lightclient-api-provider";
 
 export function ChainInfo() {
   const { connectionStatus, activeChain } = useLightClientApi();
   const [isOpen, setIsOpen] = useState(false);
   const blockNumber = useBlockNumber();
+
+  const status: "connected" | "error" | "connecting" =
+    connectionStatus?.type === WsEvent.CONNECTED && blockNumber
+      ? "connected"
+      : connectionStatus?.type === WsEvent.ERROR ||
+          connectionStatus?.type === WsEvent.CLOSE
+        ? "error"
+        : "connecting";
+
+  const Trigger = useMemo(() => {
+    return (
+      <div className="tabular-nums font-light h-6 border-foreground/20 border rounded-md px-2 text-[12px] cursor-default">
+        {status === "connected" ? (
+          <>
+            <span className="block rounded-full w-2 h-2 bg-green-400 animate-pulse mr-1" />
+          </>
+        ) : status === "error" ? (
+          <>
+            <span className="block rounded-full w-2.5 h-2.5 bg-red-400" />
+          </>
+        ) : (
+          <>
+            <span className="block rounded-full w-2 h-2 bg-yellow-400 animate-pulse" />
+            &nbsp; connecting to {activeChain?.name} via lightclient
+          </>
+        )}
+        {status === "connected" && blockNumber && (
+          <span className="text-[10px]">{`#${blockNumber}`}</span>
+        )}
+      </div>
+    );
+  }, [status, blockNumber]);
+
+  const Content = useMemo(() => {
+    return (
+      <>
+        {status === "connected" ? (
+          <>
+            connected to <b>{activeChain?.name}</b> via lightclient
+          </>
+        ) : status === "error" ? (
+          <>
+            error:{" "}
+            {connectionStatus?.type === WsEvent.ERROR
+              ? "Connection error"
+              : "Connection closed"}
+          </>
+        ) : (
+          <>connecting to {activeChain?.name} via lightclient</>
+        )}
+      </>
+    );
+  }, [status, activeChain, connectionStatus]);
 
   return (
     <TooltipProvider>
@@ -24,37 +77,11 @@ export function ChainInfo() {
           asChild
           className="flex items-center fixed bottom-4 right-4"
         >
-          <div className="tabular-nums font-light h-6 cursor-pointer border-foreground/10 border rounded-md px-2">
-            {connectionStatus?.type === WsEvent.CONNECTED ? (
-              <>
-                <span className="block rounded-full w-2 h-2 bg-green-400 animate-pulse mr-1" />{" "}
-              </>
-            ) : connectionStatus?.type === WsEvent.ERROR ||
-              connectionStatus?.type === WsEvent.CLOSE ? (
-              <>
-                <span className="block rounded-full w-2.5 h-2.5 bg-red-400" />
-                &nbsp;
-              </>
-            ) : (
-              <>
-                <span className="block rounded-full w-2 h-2 bg-yellow-400 animate-pulse" />
-                &nbsp;
-              </>
-            )}
-            <span className="text-[10px]">
-              {blockNumber ? (
-                `#${blockNumber}`
-              ) : (
-                <Loader2 className="w-2.5 h-2.5 animate-spin" />
-              )}
-            </span>
-          </div>
+          {Trigger}
         </TooltipTrigger>
-        {connectionStatus?.type === WsEvent.CONNECTED && (
-          <TooltipContent side="right" className="">
-            connected to <b>{activeChain?.name}</b>({connectionStatus.uri})
-          </TooltipContent>
-        )}
+        <TooltipContent side="right" className="">
+          {Content}
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

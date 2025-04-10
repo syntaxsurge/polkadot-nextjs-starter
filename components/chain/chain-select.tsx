@@ -12,39 +12,55 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { chainConfig } from "@/papi-config";
 import { useLightClientApi } from "@/providers/lightclient-api-provider";
 import { StatusChange, WsEvent } from "polkadot-api/ws-provider/web";
-import { Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
+import { useMemo } from "react";
 
 export function ChainSelect() {
   const { setActiveChain, activeChain, connectionStatus } = useLightClientApi();
 
-  if (connectionStatus?.type === WsEvent.ERROR || !activeChain) {
+  const Trigger = useMemo(() => {
+    if (connectionStatus?.type === WsEvent.ERROR) {
+      return (
+        <Button variant="ghost" size="icon">
+          <AlertCircle className="w-4 h-4 text-red-500" />
+        </Button>
+      );
+    }
+
+    if (connectionStatus?.type === WsEvent.CONNECTING) {
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Loader2 className="w-4 h-4 animate-spin" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Connecting to the network...</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+
     return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <Loader2 className="w-4 h-4 animate-spin" />
-          </Button>
-        </DropdownMenuTrigger>
-      </DropdownMenu>
+      <Button variant="ghost" size="icon">
+        {activeChain?.icon}
+      </Button>
     );
-  }
+  }, [activeChain, connectionStatus]);
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <>
-            {connectionStatus?.type === WsEvent.CONNECTED ? (
-              activeChain?.icon
-            ) : (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            )}
-          </>
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{Trigger}</DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Select Chain</DropdownMenuLabel>
         <DropdownMenuSeparator />

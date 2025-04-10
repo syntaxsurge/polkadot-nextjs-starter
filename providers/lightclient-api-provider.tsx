@@ -13,7 +13,7 @@ import { chainConfig } from "../papi-config";
 interface LightClientApiProviderType {
   // TODO: make own type for connectionStatus as it is sementically not correct to reuse the WsEvent type
   connectionStatus: StatusChange | undefined;
-  activeChain: ChainConfig | null;
+  activeChain: ChainConfig;
   setActiveChain: (chain: ChainConfig) => void;
   client: PolkadotClient | null;
   api: AvailableApis | null;
@@ -32,7 +32,7 @@ export function LightClientApiProvider({
 }) {
   const workerRef = useRef<Worker | null>(null);
   const smoldotRef = useRef<Client | null>(null);
-  const [activeChain, _setActiveChain] = useState<ChainConfig | null>(null);
+  const [activeChain, _setActiveChain] = useState<ChainConfig>(defaultChain);
   const [activeApi, setActiveApi] = useState<AvailableApis | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<
     StatusChange | undefined
@@ -40,12 +40,14 @@ export function LightClientApiProvider({
   const clientRef = useRef<PolkadotClient | null>(null);
 
   useEffect(() => {
-    // main thread way - not suggested
+    // --- main thread way - not suggested ---
     // smoldotRef.current = start();
 
-    // web worker way
-    // TODO: this is using smoldot library not the papi/smoldot library that
-    // is atm not working with next.js. change as soon as possible
+    // --- web worker way ---
+    // TODO: this is using smoldot library directly not via papi and implements a
+    // worker in ./worker.ts as described in https://github.com/smol-dot/smoldot
+    // papi's smoldot worker implementations are currently not working with next.js
+    // change as soon as possible
     const init = async () => {
       workerRef.current = new Worker(new URL("./worker.ts", import.meta.url));
 
@@ -67,7 +69,7 @@ export function LightClientApiProvider({
     };
 
     init();
-    // end of web worker way
+    // --- end of web worker way ---
 
     return () => {
       smoldotRef.current?.terminate();
@@ -78,9 +80,9 @@ export function LightClientApiProvider({
     try {
       setConnectionStatus({
         type: WsEvent.CONNECTING,
-        uri: `${newChain.name} via lightclient`,
+        uri: `via lightclient`,
       });
-      if (!newChain.chainSpec || !JSON.parse(newChain.chainSpec)?.name) {
+      if (!newChain.chainSpec || !newChain.chainSpec.name) {
         throw new Error(`Invalid chain spec provided for ${newChain.name}`);
       }
 
@@ -88,17 +90,17 @@ export function LightClientApiProvider({
 
       if (newChain.relayChainSpec) {
         const relayChain = await smoldotRef.current?.addChain({
-          chainSpec: newChain.relayChainSpec,
+          chainSpec: JSON.stringify(newChain.relayChainSpec),
         });
         if (!relayChain)
           throw new Error("Failed to add relay chain to light client");
         chain = smoldotRef.current?.addChain({
-          chainSpec: newChain.chainSpec,
+          chainSpec: JSON.stringify(newChain.chainSpec),
           potentialRelayChains: [relayChain],
         });
       } else {
         chain = await smoldotRef.current?.addChain({
-          chainSpec: newChain.chainSpec,
+          chainSpec: JSON.stringify(newChain.chainSpec),
         });
       }
 
@@ -110,15 +112,15 @@ export function LightClientApiProvider({
       const typedApi = lightClient.getTypedApi(newChain.descriptors);
       setActiveApi(typedApi);
       _setActiveChain(newChain);
+
+      setConnectionStatus({
+        type: WsEvent.CONNECTED,
+        uri: `via lightclient`,
+      });
     } catch (error) {
       setConnectionStatus({
         type: WsEvent.ERROR,
         event: error,
-      });
-    } finally {
-      setConnectionStatus({
-        type: WsEvent.CONNECTED,
-        uri: `${newChain.name} via lightclient`,
       });
     }
   };
