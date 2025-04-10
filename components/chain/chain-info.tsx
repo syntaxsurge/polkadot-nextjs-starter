@@ -7,24 +7,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useBlockNumber } from "@/hooks/use-block-number";
-import { useChain } from "@/providers/chain-provider";
 import { WsEvent } from "polkadot-api/ws-provider/web";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useLightClientApi } from "@/providers/lightclient-api-provider";
 
 export function ChainInfo() {
-  const { connectionStatus, wsProvider, activeChain } = useChain();
+  const { connectionStatus, activeChain } = useLightClientApi();
   const [isOpen, setIsOpen] = useState(false);
   const blockNumber = useBlockNumber();
-
-  const handleSwitch = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (connectionStatus?.type === WsEvent.CONNECTED) {
-      wsProvider?.switch();
-      setIsOpen(true);
-    }
-  };
 
   return (
     <TooltipProvider>
@@ -33,10 +24,7 @@ export function ChainInfo() {
           asChild
           className="flex items-center fixed bottom-4 right-4"
         >
-          <div
-            className="tabular-nums font-light h-6 cursor-pointer border-foreground/10 border rounded-md px-2"
-            onClick={handleSwitch}
-          >
+          <div className="tabular-nums font-light h-6 cursor-pointer border-foreground/10 border rounded-md px-2">
             {connectionStatus?.type === WsEvent.CONNECTED ? (
               <>
                 <span className="block rounded-full w-2 h-2 bg-green-400 animate-pulse mr-1" />{" "}

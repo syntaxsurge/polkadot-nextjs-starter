@@ -13,16 +13,36 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { chainConfig } from "@/papi-config";
-import { useChain } from "@/providers/chain-provider";
+import { useLightClientApi } from "@/providers/lightclient-api-provider";
+import { StatusChange, WsEvent } from "polkadot-api/ws-provider/web";
+import { Loader2 } from "lucide-react";
 
 export function ChainSelect() {
-  const { setActiveChain, activeChain } = useChain();
+  const { setActiveChain, activeChain, connectionStatus } = useLightClientApi();
+
+  if (connectionStatus?.type === WsEvent.ERROR || !activeChain) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <Loader2 className="w-4 h-4 animate-spin" />
+          </Button>
+        </DropdownMenuTrigger>
+      </DropdownMenu>
+    );
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          {activeChain?.icon || "Select Chain"}
+          <>
+            {connectionStatus?.type === WsEvent.CONNECTED ? (
+              activeChain?.icon
+            ) : (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            )}
+          </>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

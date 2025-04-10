@@ -8,6 +8,11 @@ import {
 } from "@polkadot-api/descriptors";
 import type { TypedApi } from "polkadot-api";
 import { logos } from "@/icons/logos";
+import { chainSpec as polkadotChainSpec } from "polkadot-api/chains/polkadot";
+import { chainSpec as polkadotAssetHubChainSpec } from "polkadot-api/chains/polkadot_asset_hub";
+import { chainSpec as paseoChainSpec } from "polkadot-api/chains/paseo";
+import { chainSpec as paseoAssetHubChainSpec } from "polkadot-api/chains/paseo_asset_hub";
+
 export interface ChainConfig {
   key: string;
   name: string;
@@ -19,11 +24,12 @@ export interface ChainConfig {
   endpoints: string[];
   explorerUrl?: string;
   icon?: React.ReactNode;
-  chainSpec?: { name: string; genesisHash: string; properties: any };
+  chainSpec: string;
   properties: {
     tokenDecimals: number;
     tokenSymbol: string;
   };
+  relayChainSpec?: string;
 }
 
 export type AvailableApis =
@@ -43,6 +49,7 @@ export const chainConfig: ChainConfig[] = [
       tokenDecimals: 10,
       tokenSymbol: "DOT",
     },
+    chainSpec: polkadotChainSpec,
   },
   {
     key: "polkadot_asset_hub",
@@ -57,6 +64,8 @@ export const chainConfig: ChainConfig[] = [
       tokenDecimals: 10,
       tokenSymbol: "DOT",
     },
+    relayChainSpec: polkadotChainSpec,
+    chainSpec: polkadotAssetHubChainSpec,
   },
   {
     key: "paseo",
@@ -68,6 +77,7 @@ export const chainConfig: ChainConfig[] = [
       tokenDecimals: 10,
       tokenSymbol: "PAS",
     },
+    chainSpec: paseoChainSpec,
   },
   {
     key: "paseo_asset_hub",
@@ -79,5 +89,7 @@ export const chainConfig: ChainConfig[] = [
       tokenDecimals: 10,
       tokenSymbol: "PAS",
     },
+    relayChainSpec: paseoChainSpec,
+    chainSpec: paseoAssetHubChainSpec,
   },
 ];

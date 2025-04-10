@@ -1,10 +1,10 @@
 "use client";
 
-import { useChain } from "@/providers/chain-provider";
+import { useLightClientApi } from "@/providers/lightclient-api-provider";
 import { useEffect, useState } from "react";
 
 export function useBlockNumber() {
-  const { client } = useChain();
+  const { client } = useLightClientApi();
   const [blockNumber, setBlockNumber] = useState<number | null>(null);
 
   useEffect(() => {

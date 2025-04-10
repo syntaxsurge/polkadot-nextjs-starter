@@ -15,7 +15,7 @@ import {
   type AvailableApis,
 } from "@/papi-config";
 
-interface ChainProviderType {
+interface RpcApiProviderType {
   connectionStatus: StatusChange | undefined;
   activeChain: ChainConfig | null;
   setActiveChain: (chain: ChainConfig) => void;
@@ -24,9 +24,9 @@ interface ChainProviderType {
   api: AvailableApis | null;
 }
 
-const ChainContext = createContext<ChainProviderType | undefined>(undefined);
+const RpcApiContext = createContext<RpcApiProviderType | undefined>(undefined);
 
-export function ChainProvider({ children }: { children: React.ReactNode }) {
+export function RpcApiProvider({ children }: { children: React.ReactNode }) {
   const wsProviderRef = useRef<WsJsonRpcProvider | null>(null);
   const [activeChain, _setActiveChain] = useState<ChainConfig | null>(null);
   const [activeApi, setActiveApi] = useState<AvailableApis | null>(null);
@@ -64,7 +64,7 @@ export function ChainProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ChainContext.Provider
+    <RpcApiContext.Provider
       value={{
         connectionStatus,
         api: activeApi,
@@ -75,14 +75,14 @@ export function ChainProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-    </ChainContext.Provider>
+    </RpcApiContext.Provider>
   );
 }
 
-export function useChain() {
-  const context = useContext(ChainContext);
+export function useRpcApi() {
+  const context = useContext(RpcApiContext);
   if (!context) {
-    throw new Error("useChain must be used within a ChainProvider");
+    throw new Error("useRpcApi must be used within a RpcApiProvider");
   }
   return context;
 }

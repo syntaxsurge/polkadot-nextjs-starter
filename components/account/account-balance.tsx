@@ -1,7 +1,7 @@
 "use client";
 
 import { useAccountBalance } from "@/hooks/use-account-balance";
-import { useChain } from "@/providers/chain-provider";
+import { useLightClientApi } from "@/providers/lightclient-api-provider";
 import { useMemo } from "react";
 import { Identicon } from "@polkadot/react-identicon";
 import {
@@ -19,7 +19,7 @@ import { formatBalance } from "@/lib/format-balance";
 
 export function AccountBalance() {
   const accountBalance = useAccountBalance();
-  const { activeChain } = useChain();
+  const { activeChain } = useLightClientApi();
   const { selectedAccount, isInitializing } = usePolkadotExtension();
 
   // Memoize chain properties to prevent unnecessary recalculations
@@ -67,7 +67,6 @@ export function AccountBalance() {
           Free Balance on {activeChain?.name}
         </CardTitle>
       </CardHeader>
-
       {isLoading ? (
         <>
           <CardContent>

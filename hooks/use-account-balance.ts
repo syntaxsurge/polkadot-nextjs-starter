@@ -1,6 +1,6 @@
 "use client";
 
-import { useChain } from "@/providers/chain-provider";
+import { useLightClientApi } from "@/providers/lightclient-api-provider";
 import { usePolkadotExtension } from "@/providers/polkadot-extension-provider";
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ export type AccountBalance = {
 };
 
 export function useAccountBalance() {
-  const { api } = useChain();
+  const { api } = useLightClientApi();
   const { selectedAccount } = usePolkadotExtension();
   const [accountBalance, setAccountBalance] = useState<AccountBalance | null>(
     null,

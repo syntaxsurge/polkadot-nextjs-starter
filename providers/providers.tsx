@@ -1,10 +1,10 @@
 "use client";
 
 import { ThemeProvider } from "./theme-provider";
-import { ChainProvider } from "./chain-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TxProvider } from "./tx-provider";
 import { ExtensionProvider } from "./polkadot-extension-provider";
+import { LightClientApiProvider } from "./lightclient-api-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
@@ -12,9 +12,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider defaultTheme="dark">
       <QueryClientProvider client={queryClient}>
         <ExtensionProvider>
-          <ChainProvider>
+          <LightClientApiProvider>
             <TxProvider>{children}</TxProvider>
-          </ChainProvider>
+          </LightClientApiProvider>
         </ExtensionProvider>
       </QueryClientProvider>
     </ThemeProvider>
