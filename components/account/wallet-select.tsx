@@ -17,24 +17,7 @@ export function WalletSelect({
   className?: string;
   placeholder?: string;
 }) {
-  const { selectedAccount, availableExtensions, selectedExtensions } =
-    usePolkadotExtension();
-
-  // only show wallets that are available on the current platform (mobile or browser)
-  const systemWallets = allSubstrateWallets
-    .filter((wallet) =>
-      isMobile()
-        ? wallet.platforms.includes(SubstrateWalletPlatform.Android) ||
-          wallet.platforms.includes(SubstrateWalletPlatform.iOS)
-        : wallet.platforms.includes(SubstrateWalletPlatform.Browser),
-    )
-    .sort((a, b) =>
-      availableExtensions.includes(a.id)
-        ? -1
-        : availableExtensions.includes(b.id)
-          ? 1
-          : 0,
-    );
+  const { selectedAccount, selectedExtensions } = usePolkadotExtension();
 
   const hasConnectedAccounts = selectedExtensions.some((extension) =>
     extension.getAccounts().some((account) => account.address),

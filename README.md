@@ -10,8 +10,8 @@ configurations to streamline development.
 
 ## Features
 
+- Integration with **[Polkadot API](https://papi.how)** for blockchain interactions. Using lightclients per default. Storage subscriptions, storage queries and transactions. Proper loading states for individual components that require a chain connection for best UX.
 - Server rendered pages with client components where needed with**[Next.js 15.x](https://nextjs.org/docs/app/getting-started)**
-- Integration with **[Polkadot API](https://papi.how)** for blockchain interactions. Using light clients per default. Storage subscriptions, storage queries and transactions.
 - Modern, full-control react components with [shadcn ui](https://ui.shadcn.com/)
 - Utility-first CSS with [Tailwind CSS 4.0](https://tailwindcss.com/)
   Data-fetching library for managing server state.

@@ -67,9 +67,20 @@ const getExtensionsStore = () => {
       if (connectedExtensions.has(name)) {
         connectedExtensions.delete(name);
       } else {
-        const extension = await connectInjectedExtension(name);
-        const accounts = await extension.getAccounts();
-        connectedExtensions.set(name, { extension, accounts });
+        try {
+          const extension = await connectInjectedExtension(name);
+          const accounts = await extension.getAccounts();
+          connectedExtensions.set(name, { extension, accounts });
+        } catch (error) {
+          if (
+            error instanceof Error &&
+            error.message === "Connection request was cancelled by the user."
+          ) {
+            console.log("Connection request was cancelled by the user.");
+            return;
+          }
+          throw error;
+        }
       }
       update();
     } finally {

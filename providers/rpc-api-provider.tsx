@@ -42,12 +42,12 @@ export function RpcApiProvider({ children }: { children: React.ReactNode }) {
 
   const setActiveChain = (newChain: ChainConfig) => {
     try {
-      // Check for custom endpoint in URL, fallback to chain's default endpoints
       const wsEndpoint = handleWsEndpoint({
         defaultEndpoint: newChain.endpoints[0],
       });
-      const endpoints = [wsEndpoint, ...newChain.endpoints.slice(1)];
+      if (!wsEndpoint) throw new Error("No valid WebSocket endpoint found");
 
+      const endpoints = [wsEndpoint, ...newChain.endpoints.slice(1)];
       const _wsProvider = getWsProvider(endpoints, setConnectionStatus);
 
       wsProviderRef.current = _wsProvider;
@@ -92,7 +92,7 @@ export function useRpcApi() {
  * Default endpoint will be used if none is specified
  */
 export function handleWsEndpoint({
-  defaultEndpoint = "wss://rpc-polkadot.luckyfriday.io",
+  defaultEndpoint,
 }: {
   defaultEndpoint?: string;
 } = {}) {

@@ -11,7 +11,7 @@ import { StatusChange, WsEvent } from "polkadot-api/ws-provider/web";
 import { chainConfig } from "../papi-config";
 
 interface LightClientApiProviderType {
-  // TODO: make own type for connectionStatus as it is sementically not correct to reuse the WsEvent type
+  // TODO: Make own type for connectionStatus as it is semantically not correct to reuse the WsEvent type
   connectionStatus: StatusChange | undefined;
   activeChain: ChainConfig;
   setActiveChain: (chain: ChainConfig) => void;
@@ -106,7 +106,6 @@ export function LightClientApiProvider({
 
       if (!chain) throw new Error("Failed to add chain to light client");
 
-      // Connect to the polkadot relay chain.
       const lightClient = createClient(getSmProvider(chain));
       clientRef.current = lightClient;
       const typedApi = lightClient.getTypedApi(newChain.descriptors);

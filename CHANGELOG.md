@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - 2025-05-10
+## [1.3.1] - 2025-04-11
+
+- improve `useBlockNumber` hook
+- remove unused code
+- document more features in README.md
+
+## [1.3.0] - 2025-04-10
 
 - remove react-query
 - remove tx-provider
@@ -14,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - update next to 15.3.0
 - add turbopack to `dev` script
 
-## [1.2.0] - 2025-04-10
+## [1.2.0] - 2025-04-09
 
 ### Added
 

@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useBlockNumber } from "@/hooks/use-block-number";
 import { WsEvent } from "polkadot-api/ws-provider/web";
-import { Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useLightClientApi } from "@/providers/lightclient-api-provider";
 
