@@ -22,7 +22,6 @@ export function AccountBalance() {
   const { activeChain } = useLightClientApi();
   const { selectedAccount, isInitializing } = usePolkadotExtension();
 
-  // Memoize chain properties to prevent unnecessary recalculations
   const { tokenDecimals, tokenSymbol } = activeChain.chainSpec.properties;
 
   // Format the balance for display

@@ -46,7 +46,7 @@ export function ChainInfo() {
         )}
       </div>
     );
-  }, [status, blockNumber]);
+  }, [status, blockNumber, activeChain]);
 
   const Content = useMemo(() => {
     return (
