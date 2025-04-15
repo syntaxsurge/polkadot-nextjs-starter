@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader } from "lucide-react";
 
@@ -33,6 +34,7 @@ export default function RootLayout({
           <ChainInfo />
           <Toaster position="bottom-center" icons={{ loading: <Loader /> }} />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
