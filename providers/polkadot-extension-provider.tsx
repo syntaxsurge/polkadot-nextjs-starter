@@ -32,6 +32,8 @@ interface ExtensionContext {
     account: InjectedPolkadotAccount,
   ) => void;
   onToggleExtension: (name: string) => Promise<void>;
+  /** Quickly connect the very first detected extension (convenient for 1-wallet users). */
+  connectExtension: () => Promise<void>;
   availableExtensions: string[];
   selectedExtensions: InjectedExtension[];
 }
@@ -132,6 +134,7 @@ export const ExtensionContext = createContext<ExtensionContext>({
   selectedAccount: null,
   setSelectedAccount: () => {},
   onToggleExtension: () => Promise.resolve(),
+  connectExtension: () => Promise.resolve(),
   availableExtensions: [],
   selectedExtensions: [],
 });
@@ -162,6 +165,14 @@ export function ExtensionProvider({ children }: { children: React.ReactNode }) {
     extensionsStore.getServerSnapshot,
   );
 
+  /** Convenience helper: connect the first detected extension. */
+  const connectExtension = useCallback(async () => {
+    if (!availableExtensions.length)
+      throw new Error("No browser extensions detected.");
+    const name = availableExtensions[0];
+    await extensionsStore.onToggleExtension(name);
+  }, [availableExtensions]);
+
   const restoreSelectedAccount = useCallback(async () => {
     const storedAccountJson = localStorage.getItem(SELECTED_ACCOUNT_KEY);
     if (!storedAccountJson) return;
@@ -190,7 +201,9 @@ export function ExtensionProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const initializeExtensions = async () => {
       const joinedExtensions = await getJoinedInjectedExtensions();
-      setAvailableExtensions(joinedExtensions.split(","));
+      setAvailableExtensions(
+        joinedExtensions ? joinedExtensions.split(",") : [],
+      );
       await extensionsStore.connectSavedExtensions();
       setIsInitializing(false);
     };
@@ -211,6 +224,7 @@ export function ExtensionProvider({ children }: { children: React.ReactNode }) {
         selectedAccount,
         setSelectedAccount,
         onToggleExtension: extensionsStore.onToggleExtension,
+        connectExtension,
         availableExtensions,
         selectedExtensions: [...selectedExtensions.values()].map(
           (ext) => ext.extension,

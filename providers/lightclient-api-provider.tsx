@@ -10,12 +10,20 @@ import {
 } from "react";
 import { createClient, PolkadotClient } from "polkadot-api";
 import { getSmProvider } from "polkadot-api/sm-provider";
-import * as smoldot from "smoldot/no-auto-bytecode";
+import {
+  getWsProvider,
+  WsEvent,
+  type StatusChange,
+  type WsJsonRpcProvider,
+} from "polkadot-api/ws-provider/web";
+import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat";
+import type { Client as SmoldotClient } from "polkadot-api/smoldot";
 
-import { start, type Client, type SmoldotBytecode } from "polkadot-api/smoldot";
-import { type ChainConfig, type AvailableApis } from "@/papi-config";
-import { StatusChange, WsEvent } from "polkadot-api/ws-provider/web";
-import { chainConfig } from "../papi-config";
+import {
+  type ChainConfig,
+  type AvailableApis,
+  chainConfig,
+} from "@/papi-config";
 
 interface LightClientApiProviderType {
   connectionStatus: StatusChange | undefined;
@@ -36,93 +44,104 @@ export function LightClientApiProvider({
   children: React.ReactNode;
   defaultChain?: ChainConfig;
 }) {
-  const smoldotRef = useRef<Client | null>(null);
-  const [activeChain, setActiveChain] = useState<ChainConfig>(defaultChain);
+  const smoldotRef = useRef<SmoldotClient | null>(null);
+  const wsProviderRef = useRef<WsJsonRpcProvider | null>(null);
+
+  const [activeChain, setActiveChainState] = useState<ChainConfig>(defaultChain);
   const [activeApi, setActiveApi] = useState<AvailableApis | null>(null);
   const [client, setClient] = useState<PolkadotClient | null>(null);
-  const [connectionStatus, setConnectionStatus] = useState<
-    StatusChange | undefined
-  >(undefined);
+  const [connectionStatus, setConnectionStatus] =
+    useState<StatusChange | undefined>(undefined);
 
-  function startSmoldotWorker() {
-    return import("polkadot-api/smoldot/from-worker").then(
-      ({ startFromWorker }) =>
-        startFromWorker(
-          new Worker(new URL("polkadot-api/smoldot/worker", import.meta.url), {
-            type: "module",
-          }),
-          { forbidWs: true },
-        ),
+  /** Destroys any existing providers & clients */
+  const tearDown = () => {
+    client?.destroy(); // Properly close any existing RPC connections
+    smoldotRef.current?.terminate();
+    smoldotRef.current = null;
+    wsProviderRef.current = null;
+    setClient(null);
+    setActiveApi(null);
+  };
+
+  /** Starts a Smoldot light client worker */
+  const startSmoldotWorker = () =>
+    import("polkadot-api/smoldot/from-worker").then(({ startFromWorker }) =>
+      startFromWorker(
+        new Worker(new URL("polkadot-api/smoldot/worker", import.meta.url), {
+          type: "module",
+        }),
+        { forbidWs: true },
+      ),
     );
-  }
 
+  /** Initialise a client for the provided chain configuration */
   const initializeClient = useCallback(
-    async (chainConfig: ChainConfig) => {
+    async (chain: ChainConfig) => {
+      tearDown();
+
       try {
-        setConnectionStatus({
-          type: WsEvent.CONNECTING,
-          uri: `via lightclient`,
-        });
+        // ------- LOCAL NODE (WS RPC provider) -------
+        if (chain.key === "localnode") {
+          setConnectionStatus({
+            type: WsEvent.CONNECTING,
+            uri: chain.endpoints[0] ?? "ws://127.0.0.1:9944",
+          });
+
+          const wsProvider = getWsProvider(chain.endpoints, setConnectionStatus);
+          wsProviderRef.current = wsProvider;
+
+          const rpcClient = createClient(withPolkadotSdkCompat(wsProvider));
+          const typedApi = rpcClient.getTypedApi(chain.descriptors);
+
+          setClient(rpcClient);
+          setActiveApi(typedApi);
+          setActiveChainState(chain);
+
+          return;
+        }
+
+        // ------- REMOTE OR PUBLIC CHAINS (Smoldot light client) -------
+        setConnectionStatus({ type: WsEvent.CONNECTING, uri: "via lightclient" });
 
         smoldotRef.current = await startSmoldotWorker();
 
-        if (!chainConfig.chainSpec || !chainConfig.chainSpec.name) {
-          throw new Error(
-            `Invalid chain spec provided for ${chainConfig.name}`,
-          );
-        }
-
-        let chain;
-        if (chainConfig.relayChainSpec) {
-          const relayChain = await smoldotRef.current.addChain({
-            chainSpec: JSON.stringify(chainConfig.relayChainSpec),
+        let smChain: Awaited<ReturnType<SmoldotClient["addChain"]>>;
+        if (chain.relayChainSpec) {
+          const relay = await smoldotRef.current.addChain({
+            chainSpec: JSON.stringify(chain.relayChainSpec),
           });
-          if (!relayChain) {
-            throw new Error("Failed to add relay chain to light client");
-          }
-          chain = await smoldotRef.current.addChain({
-            chainSpec: JSON.stringify(chainConfig.chainSpec),
-            potentialRelayChains: [relayChain],
+          smChain = await smoldotRef.current.addChain({
+            chainSpec: JSON.stringify(chain.chainSpec),
+            potentialRelayChains: [relay],
           });
         } else {
-          chain = await smoldotRef.current.addChain({
-            chainSpec: JSON.stringify(chainConfig.chainSpec),
+          smChain = await smoldotRef.current.addChain({
+            chainSpec: JSON.stringify(chain.chainSpec),
           });
         }
 
-        if (!chain) {
-          throw new Error("Failed to add chain to light client");
-        }
+        const lcClient = createClient(getSmProvider(smChain));
+        const typedApi = lcClient.getTypedApi(chain.descriptors);
 
-        const lightClient = createClient(getSmProvider(chain));
-        setClient(lightClient);
-        const typedApi = lightClient.getTypedApi(chainConfig.descriptors);
+        setClient(lcClient);
         setActiveApi(typedApi);
-        setActiveChain(chainConfig);
+        setActiveChainState(chain);
 
-        setConnectionStatus({
-          type: WsEvent.CONNECTED,
-          uri: `via lightclient`,
-        });
+        setConnectionStatus({ type: WsEvent.CONNECTED, uri: "via lightclient" });
       } catch (error) {
-        setConnectionStatus({
-          type: WsEvent.ERROR,
-          event: error,
-        });
+        console.error("Failed to connect", error);
+        setConnectionStatus({ type: WsEvent.ERROR, event: error });
       }
     },
-    [setClient, setActiveApi, setActiveChain, setConnectionStatus],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   useEffect(() => {
     initializeClient(defaultChain);
-
-    return () => {
-      smoldotRef.current?.terminate();
-      smoldotRef.current = null;
-      setClient(null);
-    };
-  }, [defaultChain, initializeClient]);
+    return () => tearDown();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultChain]);
 
   return (
     <LightClientApiContext.Provider

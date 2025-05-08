@@ -26,6 +26,16 @@
       "wsUrl": "wss://rpc2.paseo.popnetwork.xyz",
       "metadata": ".papi/metadata/pop.scale",
       "genesis": "0xe8b2d197b82a0da1fffca832c050894ebe343b289c61ef439aa694bdcef78aa1"
+    },
+    "localnode": {
+      "wsUrl": "ws://127.0.0.1:9944",
+      "metadata": ".papi/metadata/localnode.scale",
+      "genesis": "0x4545454545454545454545454545454545454545454545454545454545454545"
     }
+  },
+  "ink": {
+    "credential_nft": ".papi/contracts/credential_nft.json",
+    "did_registry": ".papi/contracts/did_registry.json",
+    "subscription_manager": ".papi/contracts/subscription_manager.json"
   }
 }

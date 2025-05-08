@@ -15,27 +15,12 @@ export interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    title: "Products",
-    href: "/products",
-    items: [
-      { title: "Product 1", href: "#" },
-      { title: "Product 2", href: "#" },
-      { title: "Product 3", href: "#" },
-    ],
+    title: "Credential NFT",
+    href: "/credential",
   },
   {
-    title: "Solutions",
-    href: "/solutions",
-    items: [
-      { title: "Solution 1", href: "#" },
-      { title: "Solution 2", href: "#" },
-      { title: "Solution 3", href: "#" },
-    ],
-  },
-  {
-    title: "Resources",
-    href: "/resources",
-    items: [],
+    title: "DID Registry",
+    href: "/did",
   },
 ];
 

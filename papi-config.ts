@@ -5,6 +5,7 @@ import {
   polkadot_asset_hub,
   paseo,
   paseo_asset_hub,
+  localnode,
 } from "@polkadot-api/descriptors";
 import type { TypedApi } from "polkadot-api";
 import { logos } from "@/icons/logos";
@@ -12,25 +13,28 @@ import { chainSpec as polkadotChainSpec } from "polkadot-api/chains/polkadot";
 import { chainSpec as polkadotAssetHubChainSpec } from "polkadot-api/chains/polkadot_asset_hub";
 import { chainSpec as paseoChainSpec } from "polkadot-api/chains/paseo";
 import { chainSpec as paseoAssetHubChainSpec } from "polkadot-api/chains/paseo_asset_hub";
+import localnodeChainSpec from "@/chains/localnode.json" assert { type: "json" };
 
 export interface ChainSpec {
   name: string;
   id: string;
   chainType: string;
   bootNodes: string[];
-  telemetryEndpoints: string[];
-  protocolId: string;
+  telemetryEndpoints: string[] | null;
+  protocolId: string | null;
   properties: {
     tokenDecimals: number;
     tokenSymbol: string;
-  };
-  relay_chain: string;
-  para_id: number;
-  codeSubstitutes: Record<string, string>;
+  } | null;
+  relay_chain?: string;
+  para_id?: number;
+  codeSubstitutes?: Record<string, string>;
   genesis: {
     stateRootHash: string;
+    raw?: unknown;
   };
 }
+
 export interface ChainConfig {
   key: string;
   name: string;
@@ -38,7 +42,8 @@ export interface ChainConfig {
     | typeof polkadot
     | typeof polkadot_asset_hub
     | typeof paseo
-    | typeof paseo_asset_hub;
+    | typeof paseo_asset_hub
+    | typeof localnode;
   endpoints: string[];
   explorerUrl?: string;
   icon?: React.ReactNode;
@@ -50,7 +55,8 @@ export type AvailableApis =
   | TypedApi<typeof polkadot>
   | TypedApi<typeof polkadot_asset_hub>
   | TypedApi<typeof paseo>
-  | TypedApi<typeof paseo_asset_hub>;
+  | TypedApi<typeof paseo_asset_hub>
+  | TypedApi<typeof localnode>;
 
 // TODO: add all chains your dapp supports here
 export const chainConfig: ChainConfig[] = [
@@ -90,5 +96,13 @@ export const chainConfig: ChainConfig[] = [
     icon: logos.paseoAssethub,
     chainSpec: JSON.parse(paseoAssetHubChainSpec),
     relayChainSpec: JSON.parse(paseoChainSpec),
+  },
+  {
+    key: "localnode",
+    name: "Local Node",
+    descriptors: localnode,
+    endpoints: ["ws://127.0.0.1:9944"],
+    icon: logos.polkadot,
+    chainSpec: localnodeChainSpec as ChainSpec,
   },
 ];
