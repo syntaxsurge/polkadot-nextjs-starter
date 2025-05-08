@@ -11,7 +11,11 @@ import {
   paidUntil,
 } from "@/lib/subscription-manager";
 import { usePolkadotExtension } from "@/providers/polkadot-extension-provider";
-import { buildExplorerLink, ensureSigner } from "@/lib/utils";
+import {
+  buildExplorerLink,
+  ensureSigner,
+  stringifyWithBigInt,
+} from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
 /*                                 types                              */
@@ -244,7 +248,7 @@ export default function SubscriptionManagerPage() {
             <div className="mt-6">
               <h2 className="font-semibold">Query Result</h2>
               <pre className="text-sm bg-muted p-4 rounded-md overflow-auto">
-{JSON.stringify(queryResult, null, 2)}
+{stringifyWithBigInt(queryResult)}
               </pre>
             </div>
           )}
