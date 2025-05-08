@@ -22,6 +22,10 @@ const navItems: NavItem[] = [
     title: "DID Registry",
     href: "/did",
   },
+  {
+    title: "Subscription Manager",
+    href: "/subscription",
+  },
 ];
 
 export function NavBar() {
